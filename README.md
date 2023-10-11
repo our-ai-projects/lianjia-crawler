@@ -2,6 +2,18 @@
 
 链家数据抓取服务
 
+## Env 
+
+env/.env
+
+```
+SEQUELIZE_DIALECT=dialect
+SEQUELIZE_DATABASE=database
+SEQUELIZE_DATABASE_HOST=host
+SEQUELIZE_DATABASE_USERNAME=usernmae
+SEQUELIZE_DATABASE_PASSWORD=password
+```
+
 ## Available Scripts
 
 ### `npm run dev`

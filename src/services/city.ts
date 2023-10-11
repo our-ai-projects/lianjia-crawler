@@ -2,50 +2,60 @@
  * @file 城市数据抓取
  */
 
-import * as cheerio from 'cheerio'
-import { get } from '@src/shared/request'
+import logger from 'jet-logger';
+import * as cheerio from 'cheerio';
 
-interface City {
-  group: string
-  href: string
-  zh_name: string
-  en_name: string
-}
+import { get } from '@src/shared/request';
+import { CityModel, City } from '@src/models/City';
 
 const getCities = async () => {
-  const url = 'https://m.lianjia.com/city/'
+  const url = 'https://m.lianjia.com/city/';
 
-  const content = await get(url)
+  const content = await get(url);
 
-  const $ = cheerio.load(content.text)
+  const $ = cheerio.load(content.text);
 
-  const cities: City[] = []
+  const cities: CityModel[] = [];
 
   $('.group').each((_, item) => {
-    const group = $(item).find('h6').text()
+    const group = $(item).find('h6').text();
 
     $(item)
       .find('.city_block > a')
       .each((_, item) => {
-        const href = $(item).attr('href') as string
+        const href = $(item).attr('href') as string;
 
-        const zh_name = $(item).text()
-        const en_name = href?.match(/\/([^/]+)\/$/)?.[1] as string
+        const zh_name = $(item).text();
+        const en_name = href?.match(/\/([^/]+)\/$/)?.[1] as string;
 
         cities.push({
           group,
           href,
           zh_name,
           en_name
-        })
-      })
-  })
+        });
+      });
+  });
 
-  return cities
-}
+  return cities;
+};
 
-;(async () => {
-  const cities = await getCities()
+(async () => {
+  const result = await City.findAndCountAll();
 
-  console.log(cities.map(city => city.zh_name))
-})()
+  if (result.count) {
+    const cities = await City.findAll();
+
+    logger.info('query data success');
+    logger.info(cities.map(city => city.dataValues.zh_name));
+
+    return;
+  }
+
+  const cities = await getCities();
+
+  await City.bulkCreate(cities);
+
+  logger.info('insert data success');
+  logger.info(cities.map(city => city.zh_name));
+})();

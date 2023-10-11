@@ -4,12 +4,12 @@
  * arguments, and cron-jobs.
  */
 
-import path from 'path'
-import dotenv from 'dotenv'
-import { parse } from 'ts-command-line-args'
+import path from 'path';
+import dotenv from 'dotenv';
+import { parse } from 'ts-command-line-args';
 
 interface IArgs {
-  env: string
+  env: string;
 }
 
 // Command line arguments
@@ -19,18 +19,18 @@ const args = parse<IArgs>({
     defaultValue: 'development',
     alias: 'e'
   }
-})
+});
 
 // Set the env file
 const loadEnv = (env: string) => {
   const result = dotenv.config({
     path: path.join(__dirname, `../env/${env}.env`)
-  })
+  });
   if (result.error) {
-    throw result.error
+    throw result.error;
   }
-}
+};
 
-if (args.env == 'development') loadEnv('')
+if (args.env == 'development') loadEnv('');
 
-loadEnv(args.env)
+loadEnv(args.env);

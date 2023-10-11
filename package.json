@@ -2,9 +2,23 @@
   "name": "crawler-service",
   "version": "0.0.1",
   "description": "lianjia data crawler service.",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon",
+    "build": "npx ts-node build.ts",
+    "start": "node -r module-alias/register ./dist"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src"
+    ],
+    "ext": "ts, html",
+    "exec": "./node_modules/.bin/ts-node --files -r tsconfig-paths/register ./src"
+  },
+  "_moduleAliases": {
+    "@src": "dist"
+  },
+  "engines": {
+    "node": ">=8.10.0"
   },
   "repository": {
     "type": "git",
@@ -15,9 +29,22 @@
     "lianjia"
   ],
   "author": "heora",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/lianjia-ai/crawler-service/issues"
   },
-  "homepage": "https://github.com/lianjia-ai/crawler-service#readme"
+  "homepage": "https://github.com/lianjia-ai/crawler-service#readme",
+  "dependencies": {
+    "jet-logger": "^1.3.1",
+    "module-alias": "^2.2.3"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.2",
+    "@types/node": "^20.8.4",
+    "fs-extra": "^11.1.1",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.2.2"
+  }
 }

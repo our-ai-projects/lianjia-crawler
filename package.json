@@ -1,0 +1,23 @@
+{
+  "name": "crawler-service",
+  "version": "0.0.1",
+  "description": "lianjia data crawler service.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/lianjia-ai/crawler-service.git"
+  },
+  "keywords": [
+    "crawler",
+    "lianjia"
+  ],
+  "author": "heora",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lianjia-ai/crawler-service/issues"
+  },
+  "homepage": "https://github.com/lianjia-ai/crawler-service#readme"
+}

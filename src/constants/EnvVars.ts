@@ -1,0 +1,13 @@
+/**
+ * Environments variables declared here.
+ */
+
+export default {
+  NodeEnv: process.env.NODE_ENV ?? '',
+
+  SEQUELIZE_DIALECT: process.env.SEQUELIZE_DIALECT,
+  SEQUELIZE_DATABASE: process.env.SEQUELIZE_DATABASE,
+  SEQUELIZE_DATABASE_HOST: process.env.SEQUELIZE_DATABASE_HOST,
+  SEQUELIZE_DATABASE_USERNAME: process.env.SEQUELIZE_DATABASE_USERNAME,
+  SEQUELIZE_DATABASE_PASSWORD: process.env.SEQUELIZE_DATABASE_PASSWORD
+}

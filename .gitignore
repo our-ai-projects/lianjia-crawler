@@ -6,12 +6,14 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-
 # Dependency directories
 node_modules/
 
 # Dist
-dist
+dist/
 
 # Testings
-testings
+testings/
+
+# Local env files
+.env

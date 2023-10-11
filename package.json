@@ -1,11 +1,11 @@
 {
   "name": "crawler-service",
   "version": "0.0.1",
-  "description": "lianjia data crawler service.",
+  "description": "lianjia data crawler service",
   "scripts": {
     "dev": "nodemon",
     "build": "npx ts-node build.ts",
-    "start": "node -r module-alias/register ./dist"
+    "start": "node -r module-alias/register ./dist --env=production"
   },
   "nodemonConfig": {
     "watch": [
@@ -35,12 +35,17 @@
   },
   "homepage": "https://github.com/lianjia-ai/crawler-service#readme",
   "dependencies": {
+    "dotenv": "^16.3.1",
     "jet-logger": "^1.3.1",
-    "module-alias": "^2.2.3"
+    "module-alias": "^2.2.3",
+    "mysql2": "^3.6.1",
+    "sequelize": "^6.33.0",
+    "ts-command-line-args": "^2.5.1"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.2",
     "@types/node": "^20.8.4",
+    "@types/sequelize": "^4.28.16",
     "fs-extra": "^11.1.1",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",

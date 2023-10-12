@@ -33,7 +33,49 @@ export interface NewHouseModel {
   app_detail_url: string;
 }
 
-export class NewHouse extends Model<NewHouseModel> {}
+export class NewHouse extends Model<NewHouseModel> {
+  public static keys = [
+    'city_id',
+    'city_name',
+    'cover_pic',
+    'min_frame_area',
+    'max_frame_area',
+    'district_id',
+    'district_name',
+    'bizcircle_name',
+    'bizcircle_id',
+    'resblock_frame_area',
+    'decoration',
+    'longitude',
+    'latitude',
+    'frame_rooms_desc',
+    'title',
+    'resblock_alias',
+    'address',
+    'store_addr',
+    'avg_unit_price',
+    'average_price',
+    'converged_rooms',
+    'tags',
+    'house_type',
+    'sale_status',
+    'open_date',
+    'properright',
+    'developer_company',
+    'property_company',
+    'recommend_data',
+    'app_detail_url'
+  ] as any;
+
+  public static translateData(data: any[]) {
+    return data.map(item => {
+      return NewHouse.keys.reduce((pre: any, k: any) => {
+        pre[k] = item[k];
+        return pre;
+      }, {} as any);
+    });
+  }
+}
 
 export default (sequelize: Sequelize, options: ModelOptions) => {
   return NewHouse.init(
@@ -57,11 +99,11 @@ export default (sequelize: Sequelize, options: ModelOptions) => {
         comment: '封面图'
       },
       min_frame_area: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.STRING,
         comment: '最小面积'
       },
       max_frame_area: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.STRING,
         comment: '最大面积'
       },
       district_id: {

@@ -5,11 +5,14 @@ import logger from 'jet-logger';
 
 import createCity from './City';
 import createRecord from './Record';
+import createNewHouse from './NewHouse';
 
-create();
+export const sync = async () => {
+  await create();
+};
 
 async function create() {
-  const modelDefiners = [createCity, createRecord];
+  const modelDefiners = [createCity, createRecord, createNewHouse];
 
   const {
     SEQUELIZE_DATABASE,
@@ -41,8 +44,8 @@ async function create() {
 
   await sequelize.authenticate();
   // await sequelize.sync({ force: true });
-  // await sequelize.sync({ alter: true });
-  await sequelize.sync();
+  await sequelize.sync({ alter: true });
+  // await sequelize.sync();
 
   logger.info('connection success');
 }

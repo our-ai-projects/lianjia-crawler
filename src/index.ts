@@ -1,7 +1,6 @@
-// Must be the first import
-import './pre-start';
-import './models/sync';
+import './pre-start'; // Must be the first import
 
+import { sync } from './models/sync';
 import CityService from './services/CityService';
 import LoupanService from './services/LoupanService';
 
@@ -9,6 +8,7 @@ import { CrawlerOptions, CrawlerType } from './typings';
 
 const App = () => {
   const pre = async () => {
+    await sync();
     await CityService.run();
   };
 

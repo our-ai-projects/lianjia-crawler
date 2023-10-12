@@ -4,14 +4,16 @@
 import logger from 'jet-logger';
 
 import { get } from '@src/shared/request';
-import { getCache } from '@src/repos/RecordRepos';
+import { getCache, updateCache } from '@src/repos/RecordRepos';
 import { getCities } from '@src/repos/CityRepos';
 import { CrawlerOptions } from '@src/typings';
 
 import { delay } from '@src/shared/tools';
+import { bulkUpdate } from '@src/repos/NewHouseRepos';
+import { NewHouseModel, NewHouse } from '@src/models/NewHouse';
 
 const fetchData = async (city: string) => {
-  const result: any[] = [];
+  const result: NewHouseModel[] = [];
 
   const _crawler = async (page: number) => {
     try {
@@ -28,8 +30,7 @@ const fetchData = async (city: string) => {
       const { _resblock_list, page_size } = data.body;
 
       if (Array.isArray(_resblock_list)) {
-        result.push(..._resblock_list);
-
+        result.push(...NewHouse.translateData(_resblock_list));
         logger.info(
           `${city} ${page} ${_resblock_list.length} ${result.length}`
         );
@@ -76,6 +77,13 @@ const run = async (options: CrawlerOptions) => {
     const data = await fetchData(k);
 
     logger.imp(`fetch done ${k}-${mappping[k]} ${data.length}`);
+
+    cache.push(k);
+
+    await bulkUpdate(data);
+    await updateCache(batch, cache);
+
+    logger.imp(`insert data to database success`);
 
     await delay(8, 15);
   }

@@ -1,6 +1,6 @@
-# crawler-service
+# lianjia-crawler
 
-链家数据抓取服务
+链家数据抓取
 
 ## Env 
 
@@ -31,9 +31,9 @@ Run the production build (Must be built first).
 ## Docker Images
 
 ```bash
-docker buildx build --platform linux/amd64 -t lianjia-crawler-service:latest -f Dockerfile .
+docker buildx build --platform linux/amd64 -t lianjia-crawler:latest -f Dockerfile .
 ```
 
 ```bash
-docker run -d -p 8081:8081 lianjia-crawler-service
+docker run -d -p 8081:8081 lianjia-crawler
 ```

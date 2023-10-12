@@ -4,11 +4,12 @@ import EnvVars from '@src/constants/EnvVars';
 import logger from 'jet-logger';
 
 import createCity from './City';
+import createRecord from './Record';
 
 create();
 
 async function create() {
-  const modelDefiners = [createCity];
+  const modelDefiners = [createCity, createRecord];
 
   const {
     SEQUELIZE_DATABASE,

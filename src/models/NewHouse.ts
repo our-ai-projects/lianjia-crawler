@@ -200,7 +200,7 @@ export default (sequelize: Sequelize, options: ModelOptions) => {
         comment: '物业公司'
       },
       recommend_data: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         comment: '推荐信息'
       },
       app_detail_url: {

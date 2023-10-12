@@ -6,7 +6,7 @@ export interface RecordModel {
   record: string;
 }
 
-export class Record extends Model<RecordModel> {}
+export class Record extends Model<RecordModel> { }
 
 export default (sequelize: Sequelize, options: ModelOptions) => {
   return Record.init(
@@ -29,7 +29,7 @@ export default (sequelize: Sequelize, options: ModelOptions) => {
         comment: '抓取批次'
       },
       record: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         comment: '城市抓取记录 tj,changzhou'
       }
     },

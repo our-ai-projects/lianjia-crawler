@@ -70,7 +70,8 @@ export class NewHouse extends Model<NewHouseModel> {
   public static translateData(data: any[]) {
     return data.map(item => {
       return NewHouse.keys.reduce((pre: any, k: any) => {
-        pre[k] = item[k];
+        const v = item[k]
+        pre[k] = typeof v === 'string' ? v : JSON.stringify(v);
         return pre;
       }, {} as any);
     });

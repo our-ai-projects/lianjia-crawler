@@ -17,7 +17,7 @@ export const delayWithConsole = async (ms = 60) => {
   }
 };
 
-export const delay = async (start = 3, end = 15) => {
+export const delay = async (start = 8, end = 15) => {
   const delay = getRandom(start, end) * 100;
 
   logger.info(`delay ${delay}ms`);

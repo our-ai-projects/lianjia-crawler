@@ -44,8 +44,8 @@ async function create() {
 
   await sequelize.authenticate();
   // await sequelize.sync({ force: true });
-  await sequelize.sync({ alter: true });
-  // await sequelize.sync();
+  // await sequelize.sync({ alter: true });
+  await sequelize.sync();
 
   logger.info('connection success');
 }

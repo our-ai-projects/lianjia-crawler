@@ -18,7 +18,7 @@
     "@src": "dist"
   },
   "engines": {
-    "node": ">=18.15.0"
+    "node": ">=17.0.0"
   },
   "repository": {
     "type": "git",

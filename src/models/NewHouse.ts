@@ -168,7 +168,7 @@ export default (sequelize: Sequelize, options: ModelOptions) => {
         comment: '平均价格'
       },
       converged_rooms: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         comment: '房型介绍'
       },
       tags: {

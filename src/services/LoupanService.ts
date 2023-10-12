@@ -87,6 +87,8 @@ const run = async (options: CrawlerOptions) => {
 
     logger.imp(`insert data to database success`);
 
+    logger.imp(`size ${keys.length}`);
+
     await delay();
   }
 };

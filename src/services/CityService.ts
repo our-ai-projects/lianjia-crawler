@@ -6,9 +6,10 @@ import logger from 'jet-logger';
 import * as cheerio from 'cheerio';
 
 import { get } from '@src/shared/request';
-import { CityModel, City } from '@src/models/City';
+import { CityModel } from '@src/models/City';
+import { bulkUpdate, getCities, getCount } from '@src/repos/CityRepos';
 
-const getCities = async () => {
+const fetchCities = async () => {
   const url = 'https://m.lianjia.com/city/';
 
   const content = await get(url);
@@ -40,11 +41,11 @@ const getCities = async () => {
   return cities;
 };
 
-(async () => {
-  const result = await City.findAndCountAll();
+const run = async () => {
+  const result = await getCount();
 
   if (result.count) {
-    const cities = await City.findAll();
+    const cities = await getCities();
 
     logger.info('query data success');
     logger.info(cities.map(city => city.dataValues.zh_name));
@@ -52,10 +53,14 @@ const getCities = async () => {
     return;
   }
 
-  const cities = await getCities();
+  const cities = await fetchCities();
 
-  await City.bulkCreate(cities);
+  await bulkUpdate(cities);
 
   logger.info('insert data success');
   logger.info(cities.map(city => city.zh_name));
-})();
+};
+
+export default {
+  run
+};

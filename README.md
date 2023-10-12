@@ -1,6 +1,6 @@
 # lianjia-crawler
 
-链家数据抓取
+链家数据抓取（接口抓取）
 
 ## Env 
 

@@ -1,16 +1,35 @@
-import './pre-start'; // Must be the first import
-import logger from 'jet-logger';
-
-import EnvVars from '@src/constants/EnvVars';
-
+// Must be the first import
+import './pre-start';
 import './models/sync';
-import './services/city';
 
-console.log(EnvVars.NodeEnv, EnvVars.SEQUELIZE_DATABASE);
+import CityService from './services/CityService';
+import LoupanService from './services/LoupanService';
 
-process.on('exit', async err => {
-  logger.err(`exit ${err} `);
-});
-process.on('SIGINT', async err => {
-  logger.err(`SIGINT ${err} `);
-});
+import { CrawlerOptions, CrawlerType } from './typings';
+
+const App = () => {
+  const pre = async () => {
+    await CityService.run();
+  };
+
+  const start = async () => {
+    await pre();
+
+    const options: CrawlerOptions = {
+      type: CrawlerType.NEW_HOUSE,
+      batch: '2023-10-12'
+    };
+
+    switch (options.type) {
+      case CrawlerType.NEW_HOUSE:
+        await LoupanService.run(options);
+        break;
+    }
+  };
+
+  return {
+    start
+  };
+};
+
+App().start();

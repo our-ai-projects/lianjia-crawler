@@ -1,37 +1,27 @@
 import './pre-start'; // Must be the first import
 
+import schedule from 'node-schedule';
 import logger from 'jet-logger';
-import EnvVars from './constants/EnvVars';
 
 import { sync } from './models/sync';
 import CityService from './services/CityService';
 import LoupanService from './services/LoupanService';
 
-import { CrawlerOptions, CrawlerType } from './typings';
+import { CrawlerType } from './typings';
+import { getBatch, getEnvVars } from './shared/tools';
 
 const App = () => {
+  const { CRAWLER_TYPE, CRAWLER_BATCH, CRAWLER_CRON } = getEnvVars();
+
   const pre = async () => {
     await sync();
     await CityService.run();
   };
 
-  const start = async () => {
-    const { CRAWLER_TYPE, CRAWLER_BATCH } = EnvVars;
-
-    if (!CRAWLER_TYPE) {
-      logger.err(`missing CRAWLER_TYPE parameter`);
-      return;
-    }
-    if (!CRAWLER_BATCH) {
-      logger.err(`missing CRAWLER_BATCH parameter`);
-      return;
-    }
-
-    await pre();
-
-    const options: CrawlerOptions = {
+  const start = async (batch: string) => {
+    const options = {
       type: Number(CRAWLER_TYPE),
-      batch: CRAWLER_BATCH
+      batch
     };
 
     switch (options.type) {
@@ -44,9 +34,34 @@ const App = () => {
     }
   };
 
+  // https://www.npmjs.com/package/node-schedule
+  // ┬    ┬    ┬    ┬    ┬    ┬
+  // │    │    │    │    │    │
+  // │    │    │    │    │    └ day of week (0 - 7) (0 or 7 is Sun)
+  // │    │    │    │    └───── month (1 - 12)
+  // │    │    │    └────────── day of month (1 - 31)
+  // │    │    └─────────────── hour (0 - 23)
+  // │    └──────────────────── minute (0 - 59)
+  // └───────────────────────── second (0 - 59, OPTIONAL)
+  const runSchedule = (cron: string) => {
+    logger.imp(`schedule ${cron}`);
+    schedule.scheduleJob(cron, () => start(getBatch()));
+  };
+
+  const init = async () => {
+    await pre();
+
+    if (CRAWLER_CRON) {
+      runSchedule(CRAWLER_CRON);
+      return;
+    }
+
+    start(CRAWLER_BATCH);
+  };
+
   return {
-    start
+    init
   };
 };
 
-App().start();
+App().init();

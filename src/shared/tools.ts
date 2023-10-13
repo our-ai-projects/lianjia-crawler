@@ -1,4 +1,6 @@
+import moment from 'moment';
 import logger from 'jet-logger';
+import EnvVars from '@src/constants/EnvVars';
 
 export const getRandom = (start: number, end: number) =>
   Math.floor(Math.random() * (end - start + 1) + start);
@@ -23,4 +25,19 @@ export const delay = async (start = 3, end = 15) => {
   logger.info(`delay ${delay}ms`);
 
   await delaySync(delay);
+};
+
+export const getBatch = () => moment().format('YYYY-MM-DD');
+
+export const getEnvVars = () => {
+  const {
+    CRAWLER_TYPE = 2,
+    CRAWLER_BATCH = getBatch(),
+    CRAWLER_CRON
+  } = EnvVars;
+  return {
+    CRAWLER_TYPE,
+    CRAWLER_BATCH,
+    CRAWLER_CRON
+  };
 };

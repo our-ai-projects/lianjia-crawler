@@ -27,21 +27,17 @@ const fetchData = async (city: string) => {
         return;
       }
 
-      const { total, body } = data
+      const { total, body } = data;
       const { _resblock_list } = body;
 
       if (Array.isArray(_resblock_list) && _resblock_list.length) {
         result.push(...NewHouse.translateData(_resblock_list));
 
-        logger.info(
-          `${city} ${page} ${result.length} ${total}`
-        );
+        logger.info(`${city} ${page} ${result.length} ${total}`);
 
         await delay();
         await _crawler(page + 1);
       }
-
-
     } catch (error) {
       logger.err(error);
     }
@@ -70,6 +66,11 @@ const run = async (options: CrawlerOptions) => {
     cache,
     cities.map(city => city.dataValues.en_name)
   );
+
+  if (keys.length === 0) {
+    logger.imp(`batch ${batch} already fetched`);
+    return;
+  }
 
   while (keys.length) {
     const k = keys.shift() as string;

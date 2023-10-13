@@ -7,7 +7,7 @@ import * as cheerio from 'cheerio';
 
 import { get } from '@src/shared/request';
 import { CityModel } from '@src/models/City';
-import { bulkUpdate, getCities, getCount } from '@src/repos/CityRepos';
+import { bulkUpdate, getCount } from '@src/repos/CityRepos';
 
 const fetchCities = async () => {
   const url = 'https://m.lianjia.com/city/';
@@ -44,20 +44,13 @@ const fetchCities = async () => {
 const run = async () => {
   const result = await getCount();
 
-  if (result.count) {
-    const cities = await getCities();
-
-    logger.info('query data success');
-    logger.info(cities.map(city => city.dataValues.zh_name));
-
-    return;
-  }
+  if (result.count) return;
 
   const cities = await fetchCities();
 
   await bulkUpdate(cities);
 
-  logger.info('insert data success');
+  logger.info('insert cities data success');
   logger.info(cities.map(city => city.zh_name));
 };
 

@@ -30,14 +30,16 @@ export const delay = async (start = 3, end = 15) => {
 export const getBatch = () => moment().format('YYYY-MM-DD');
 
 export const getEnvVars = () => {
-  const {
-    CRAWLER_TYPE = 2,
-    CRAWLER_BATCH = getBatch(),
-    CRAWLER_CRON
-  } = EnvVars;
+  const { CRAWLER_TYPE, CRAWLER_BATCH } = EnvVars;
+
   return {
-    CRAWLER_TYPE,
-    CRAWLER_BATCH,
-    CRAWLER_CRON
+    ...EnvVars,
+    CRAWLER_TYPE: Number(CRAWLER_TYPE || 2),
+    CRAWLER_BATCH: CRAWLER_BATCH || getBatch()
   };
 };
+
+export const jsonFormatted = (jsonObj: any) => JSON.stringify(jsonObj, null, 2);
+
+export const unique = (history: string[], all: string[]) =>
+  all.filter(k => !history.includes(k));

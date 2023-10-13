@@ -1,7 +1,14 @@
 export interface CrawlerOptions {
   type: number;
-  batch: string;
+  batchId: number;
+  mapping: Obj;
+  cache: string[];
+  queue: string[];
 }
+
+export type Obj = {
+  [key in string]: any;
+};
 
 export enum CrawlerType {
   SECOND_HAND_HOUSE = 1,

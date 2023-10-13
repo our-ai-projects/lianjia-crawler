@@ -4,8 +4,7 @@
 import logger from 'jet-logger';
 
 import { get } from '@src/shared/request';
-import { getCache, updateCache } from '@src/repos/RecordRepos';
-import { getCities } from '@src/repos/CityRepos';
+import { updateCache } from '@src/repos/RecordRepos';
 import { CrawlerOptions } from '@src/typings';
 
 import { delay } from '@src/shared/tools';
@@ -48,49 +47,30 @@ const fetchData = async <T>(city: string, callback: (data: any[]) => T[]) => {
   return result;
 };
 
-const unique = (history: string[], all: string[]) =>
-  all.filter(k => !history.includes(k));
-
 const run = async (options: CrawlerOptions) => {
-  const { batch } = options;
+  const { type, batchId, mapping, cache, queue } = options;
 
-  const { batchId, cache } = await getCache(batch);
-  const cities = await getCities();
+  const total = queue.length;
 
-  const mappping = cities.reduce(
-    (pre, cur) => ((pre[cur.dataValues.en_name] = cur.dataValues.zh_name), pre),
-    {} as any
-  );
+  while (queue.length) {
+    const k = queue.shift() as string;
 
-  const keys = unique(
-    cache,
-    cities.map(city => city.dataValues.en_name)
-  );
-
-  if (keys.length === 0) {
-    logger.imp(`batch ${batch} already fetched`);
-    return;
-  }
-
-  while (keys.length) {
-    const k = keys.shift() as string;
-
-    logger.imp(`fetch start ${k}-${mappping[k]}`);
+    logger.imp(`fetch ${k}-${mapping[k]}`);
 
     const data = await fetchData<NewHouseModel>(k, (data: any[]) =>
       NewHouse.translateData(data, batchId)
     );
 
-    logger.imp(`fetch done ${k}-${mappping[k]} ${data.length}`);
+    logger.imp(`fetch done ${k}-${mapping[k]} ${data.length}`);
 
     cache.push(k);
 
     await bulkUpdate(data);
-    await updateCache(batch, cache);
+    await updateCache(type, batchId, cache);
 
-    logger.imp(`insert data to database success`);
+    logger.imp(`insert data success`);
 
-    logger.imp(`size ${keys.length}`);
+    logger.imp(`total-${total} size-${queue.length}`);
 
     await delay();
   }

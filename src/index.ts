@@ -7,21 +7,60 @@ import { sync } from './models/sync';
 import CityService from './services/CityService';
 import LoupanService from './services/LoupanService';
 
-import { CrawlerType } from './typings';
-import { getBatch, getEnvVars } from './shared/tools';
+import { CrawlerOptions, CrawlerType, Obj } from './typings';
+import { getBatch, getEnvVars, jsonFormatted, unique } from './shared/tools';
+import { getCache } from './repos/RecordRepos';
+import { getCities } from './repos/CityRepos';
 
 const App = () => {
-  const { CRAWLER_TYPE, CRAWLER_BATCH, CRAWLER_CRON } = getEnvVars();
+  const envVars = getEnvVars();
 
-  const pre = async () => {
+  logger.imp(`${jsonFormatted(envVars)}`);
+
+  const { CRAWLER_TYPE, CRAWLER_BATCH, CRAWLER_CRON } = envVars;
+
+  const buildParams = async () => {
     await sync();
     await CityService.run();
   };
 
+  const getExecutionVariables = async (cache: string[]) => {
+    const cities = await getCities();
+
+    const queue = unique(
+      cache,
+      cities.map(city => city.dataValues.en_name)
+    );
+
+    return {
+      mapping: cities.reduce(
+        (pre, cur) => (
+          (pre[cur.dataValues.en_name] = cur.dataValues.zh_name), pre
+        ),
+        {} as Obj
+      ),
+      queue
+    };
+  };
+
   const start = async (batch: string) => {
-    const options = {
-      type: Number(CRAWLER_TYPE),
-      batch
+    await buildParams();
+
+    const { batchId, cache } = await getCache(CRAWLER_TYPE, batch);
+
+    const { mapping, queue } = await getExecutionVariables(cache);
+
+    if (queue.length === 0) {
+      logger.imp(`batch ${batch} already fetched`);
+      return;
+    }
+
+    const options: CrawlerOptions = {
+      type: CRAWLER_TYPE,
+      batchId,
+      mapping,
+      cache,
+      queue
     };
 
     switch (options.type) {
@@ -49,8 +88,6 @@ const App = () => {
   };
 
   const init = async () => {
-    await pre();
-
     if (CRAWLER_CRON) {
       runSchedule(CRAWLER_CRON);
       return;

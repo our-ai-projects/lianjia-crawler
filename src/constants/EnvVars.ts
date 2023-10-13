@@ -13,5 +13,6 @@ export default {
 
   CRAWLER_TYPE: process.env.CRAWLER_TYPE,
   CRAWLER_BATCH: process.env.CRAWLER_BATCH,
-  CRAWLER_CRON: process.env.CRAWLER_CRON
+  CRAWLER_CRON: process.env.CRAWLER_CRON,
+  CRAWLER_CLUSTER: process.env.CRAWLER_CLUSTER
 };

@@ -1,15 +1,16 @@
 /**
  * @file 楼盘数据抓取 - 新房
  */
+
 import logger from 'jet-logger';
 
-import { get } from '@src/shared/request';
-import { updateCache } from '@src/repos/RecordRepos';
 import { CrawlerOptions } from '@src/typings';
-
+import { get } from '@src/shared/request';
 import { delay } from '@src/shared/tools';
-import { bulkUpdate } from '@src/repos/NewHouseRepos';
+
 import { NewHouseModel, NewHouse } from '@src/models/NewHouse';
+import { updateCache } from '@src/repos/RecordRepos';
+import { bulkUpdate } from '@src/repos/NewHouseRepos';
 
 const fetchData = async <T>(city: string, callback: (data: any[]) => T[]) => {
   const result: T[] = [];

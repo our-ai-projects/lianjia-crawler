@@ -6,6 +6,7 @@ import logger from 'jet-logger';
 import * as cheerio from 'cheerio';
 
 import { get } from '@src/shared/request';
+
 import { CityModel } from '@src/models/City';
 import { bulkUpdate, getCount } from '@src/repos/CityRepos';
 

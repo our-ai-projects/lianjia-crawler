@@ -3,14 +3,15 @@ import './pre-start'; // Must be the first import
 import schedule from 'node-schedule';
 import logger from 'jet-logger';
 
-import { sync } from './models/sync';
-import CityService from './services/CityService';
-import LoupanService from './services/LoupanService';
-
 import { CrawlerOptions, CrawlerType, Obj } from './typings';
 import { getBatch, getEnvVars, jsonFormatted, unique } from './shared/tools';
+
+import { sync } from './models/sync';
 import { getCache } from './repos/RecordRepos';
 import { getCities } from './repos/CityRepos';
+
+import CityService from './services/CityService';
+import LoupanService from './services/LoupanService';
 
 const App = () => {
   const envVars = getEnvVars();

@@ -28,6 +28,8 @@ SEQUELIZE_DATABASE_PASSWORD=password
 | CRAWLER_CLUSTER | 多进程模式，支持数字（可选）                                 |
 
 > CRAWLER_TYPE：目前仅支持抓取新房数据。
+>
+> CRAWLER_CLUSTER：多进程模式开发中。
 
 ## Available Scripts
 
@@ -85,3 +87,4 @@ docker run -p 8081:8081 \
 ## Preview
 
 ![预览效果](https://img.yueluo.club/blog/img/10921718276d4cdead345e6fb88ad5e5c.png)
+

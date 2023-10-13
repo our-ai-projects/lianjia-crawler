@@ -45,7 +45,7 @@ docker buildx build --platform linux/amd64 -t lianjia-crawler:latest -f Dockerfi
 docker run -p 8081:8081 \
 -e CRAWLER_TYPE=xx \
 -e CRAWLER_BATCH=xxxx-xx-xx \
--e SEQUELIZE_DIALECT=dialect \
+-e SEQUELIZE_DIALECT=mysql \
 -e SEQUELIZE_DATABASE=database \
 -e SEQUELIZE_DATABASE_HOST=host \
 -e SEQUELIZE_DATABASE_USERNAME=usernmae \

@@ -1,12 +1,13 @@
 import { DataTypes, Model, ModelOptions, Sequelize } from 'sequelize';
 
 export interface RecordModel {
+  id?: number;
   type: number;
   batch: string;
   record: string;
 }
 
-export class Record extends Model<RecordModel> { }
+export class Record extends Model<RecordModel> {}
 
 export default (sequelize: Sequelize, options: ModelOptions) => {
   return Record.init(

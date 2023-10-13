@@ -67,13 +67,16 @@ export class NewHouse extends Model<NewHouseModel> {
     'app_detail_url'
   ] as any;
 
-  public static translateData(data: any[]) {
+  public static translateData(data: any[], batchId: number) {
     return data.map(item => {
-      return NewHouse.keys.reduce((pre: any, k: any) => {
-        const v = item[k]
-        pre[k] = typeof v === 'string' ? v : JSON.stringify(v);
-        return pre;
-      }, {} as any);
+      return NewHouse.keys.reduce(
+        (pre: any, k: any) => {
+          const v = item[k];
+          pre[k] = typeof v === 'string' ? v : JSON.stringify(v);
+          return pre;
+        },
+        { batch_id: batchId } as any
+      );
     });
   }
 }
@@ -86,6 +89,10 @@ export default (sequelize: Sequelize, options: ModelOptions) => {
         autoIncrement: true,
         primaryKey: true,
         comment: '自增ID'
+      },
+      batch_id: {
+        type: DataTypes.INTEGER,
+        comment: '抓取批次ID'
       },
       city_id: {
         type: DataTypes.STRING,

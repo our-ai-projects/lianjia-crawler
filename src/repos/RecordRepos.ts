@@ -3,11 +3,18 @@ import { Record } from '@src/models/Record';
 export const getCache = async (batch: string) => {
   const result = await Record.findOne({ where: { batch } });
 
-  if (result) return result.dataValues.record.split(',');
+  if (result)
+    return {
+      batchId: result.dataValues.id as number,
+      cache: result.dataValues.record.split(',')
+    };
 
-  await Record.create({ type: 1, batch, record: '' });
+  const record = await Record.create({ type: 1, batch, record: '' });
 
-  return [];
+  return {
+    batchId: record.dataValues.id as number,
+    cache: []
+  };
 };
 
 export const updateCache = async (batch: string, record: string[]) => {

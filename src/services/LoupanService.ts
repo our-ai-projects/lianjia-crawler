@@ -12,8 +12,8 @@ import { delay } from '@src/shared/tools';
 import { bulkUpdate } from '@src/repos/NewHouseRepos';
 import { NewHouseModel, NewHouse } from '@src/models/NewHouse';
 
-const fetchData = async (city: string) => {
-  const result: NewHouseModel[] = [];
+const fetchData = async <T>(city: string, callback: (data: any[]) => T[]) => {
+  const result: T[] = [];
 
   const _crawler = async (page: number) => {
     try {
@@ -31,7 +31,7 @@ const fetchData = async (city: string) => {
       const { _resblock_list } = body;
 
       if (Array.isArray(_resblock_list) && _resblock_list.length) {
-        result.push(...NewHouse.translateData(_resblock_list));
+        result.push(...callback(_resblock_list));
 
         logger.info(`${city} ${page} ${result.length} ${total}`);
 
@@ -54,7 +54,7 @@ const unique = (history: string[], all: string[]) =>
 const run = async (options: CrawlerOptions) => {
   const { batch } = options;
 
-  const cache = await getCache(batch);
+  const { batchId, cache } = await getCache(batch);
   const cities = await getCities();
 
   const mappping = cities.reduce(
@@ -77,7 +77,9 @@ const run = async (options: CrawlerOptions) => {
 
     logger.imp(`fetch start ${k}-${mappping[k]}`);
 
-    const data = await fetchData(k);
+    const data = await fetchData<NewHouseModel>(k, (data: any[]) =>
+      NewHouse.translateData(data, batchId)
+    );
 
     logger.imp(`fetch done ${k}-${mappping[k]} ${data.length}`);
 

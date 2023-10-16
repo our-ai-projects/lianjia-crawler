@@ -36,7 +36,7 @@ export default (sequelize: Sequelize, options: ModelOptions) => {
     },
     {
       sequelize,
-      tableName: 'record',
+      tableName: 'crawler_record',
       defaultScope: {
         attributes: {
           exclude: ['update_time']

@@ -84,7 +84,3 @@ docker run -p 8081:8081 \
 
 每周一上午8点执行 “新房” 抓取任务。
 
-## Preview
-
-![预览效果](https://img.yueluo.club/blog/img/10921718276d4cdead345e6fb88ad5e5c.png)
-

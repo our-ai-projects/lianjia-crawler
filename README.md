@@ -73,7 +73,7 @@ docker run -p 8081:8081 \
 ```bash
 docker run -p 8081:8081 \
 -e CRAWLER_TYPE=2 \
--e CRAWLER_CRON=0 0 8 * * 1 \
+-e CRAWLER_CRON="0 0 8 * * 1" \
 -e SEQUELIZE_DIALECT=mysql \
 -e SEQUELIZE_DATABASE=database \
 -e SEQUELIZE_DATABASE_HOST=host \

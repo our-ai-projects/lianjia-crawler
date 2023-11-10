@@ -40,7 +40,7 @@ pipeline {
 					docker run -d \
             --name=${SERVER_NAME} \
             -e CRAWLER_TYPE=2 \
-            -e CRAWLER_CRON=0 0 8 1 * ? \
+            -e CRAWLER_CRON="0 0 8 11 * ?" \
 						-e SEQUELIZE_DIALECT=mysql \
 						-e SEQUELIZE_DATABASE=${SEQUELIZE_DATABASE} \
 						-e SEQUELIZE_DATABASE_HOST=${SEQUELIZE_DATABASE_HOST} \

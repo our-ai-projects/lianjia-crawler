@@ -37,7 +37,7 @@ export default (sequelize: Sequelize, options: ModelOptions) => {
     },
     {
       sequelize,
-      tableName: 'crawler_city',
+      tableName: 'lianjia_crawler_city',
       defaultScope: {
         attributes: {
           exclude: ['update_time']
